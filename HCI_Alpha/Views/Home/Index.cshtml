@@ -1,0 +1,190 @@
+﻿@model IEnumerable<HCI_Alpha.Models.RestaurantInfoVM>
+
+@{
+    ViewData["Title"] = "GoEats";
+    if (ViewBag.Sort == null)
+    {
+        ViewBag.Sort = "none";
+    }
+    var count = Model.Count();
+    if (count == 0)
+        ViewBag.NoResults = "No restaurants with that information be found . . .";
+}
+
+<input id="liveSearch"
+       name="liveSearch"
+       style="width:75%;"
+       type="text"
+       size="30"
+       placeholder="Search . . ." />
+<button type="button"
+        id="btn_Search"
+        name="btn_Search"
+        class="btn-primary"
+        style="border:none;padding:0.5em;border-radius:10px;">
+    <img src="~/img/search.png" width="25" />
+</button>
+<button type="button"
+        id="btn_filter"
+        name="btn_filter"
+        class="btn-secondary"
+        style="border: none; padding: 0.5em; border-radius: 10px;">
+    <img src="~/img/filter.png" width="25" />
+</button>
+<button type="button"
+        id="btn_Reset"
+        name="btn_Reset"
+        class="btn-danger"
+        style="border: none; padding: 0.5em; border-radius: 10px;">
+    Reset
+</button>
+<br />
+@ViewBag.NoResults
+@ViewBag.Message
+@foreach (var item in Model)
+{
+    <div id="deployRest" class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="@item.Rest_Menu" target="_blank">@item.Rest_Name</a>
+            @item.Rest_CurbSide
+            @item.Rest_TakeOut
+            @item.Rest_IndoorSeating
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#extraInfo_@item.Rest_Id" aria-controls="extraInfo_@item.Rest_Id" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="extraInfo_@item.Rest_Id">
+                <span style="color: #ff2b1c">COVID-19 Policy</span><br />
+                @item.Rest_CovidPolicy
+                Location: @item.Rest_Address, @item.Rest_City, @item.Rest_State @item.Rest_ZipCode
+                <br />Hours: @item.Rest_Time
+                <br />Price Range:@if (item.Rest_PriceRange < 15)
+                {
+                    <b>$</b>
+                }
+                else if (item.Rest_PriceRange < 25)
+                {
+                    <b>$$</b>
+                }
+                else if (item.Rest_PriceRange < 50)
+                {
+                    <b>$$$</b>
+                }
+                else if (item.Rest_PriceRange < 50)
+                {
+                    <b>$$$$</b>
+                }
+                else
+                {
+                    <b>$$$$</b>
+                } <br />
+                Telephone: @item.Rest_Phone<br />
+                Delivery:
+                @if (item.Rest_CurbSide == false && item.Rest_IndoorSeating == false && item.Rest_LimitedSeating == false && item.Rest_TakeOut == false)
+                {
+                    <span>Unvailable</span>
+                }
+                else
+                {
+                    <span>Available</span>
+                }
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More Information</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown07">
+                    <a class="dropdown-item" asp-action="Reviews" asp-route-id="@item.Rest_Id">Reviews</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Filter/Search Modal -->
+    <div class="modal fade" id="FilterModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="color:black;">
+                    <b>Sort Restaurants by</b><br />
+                    <input type="radio" id="rd_desc" name="sort" value="0" group />
+                    <label for="rd_desc">Descinding</label>
+                    <br />
+                    <input type="radio" id="rd_asc" name="sort" value="1" />
+                    <label for="rd_asc">Ascending</label>
+                    <hr />
+                    <b>Select a Cuisine</b><br />
+                    <select id="dl_cuisine2" name="dl_cuisine2" asp-items="@(new SelectList((System.Collections.IEnumerable)ViewData["Cuisine"], "cuisine_name", "cuisine_name"))">
+                        <option value="" selected>-- Select Cuisine --</option>
+                    </select>
+                    <hr />
+                    <b>Select a Service</b><br />
+                    <select id="dl_service2" name="dl_service2">
+                        <option value="" selected>-- Select Service --</option>
+                        <option value="Curbside">Curbside</option>
+                        <option value="delivery">Delivery</option>
+                        <option value="Dine-In">Dine-In</option>
+                        <option value="Takeout">Takeout</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn_modal_filter" class="btn btn-primary">Continue</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts {
+    <script>
+        // Search for anything that pertains to a restaurant name
+        $('#btn_Search').on('click', function () {
+            var search = $('#liveSearch').val();
+            var option_cuisine = $('#dl_cuisine').val();
+            if (option_cuisine != "")
+                location.href = "/Home/Index/0/" + option_cuisine + "/" + search;
+            else
+                location.href = "/Home/Index/0/x/" + search;
+        });
+        $('#liveSearch').keypress(function (e) {
+            var key = e.which;
+            if (key == 13)  // the enter key code
+            {
+                $('#btn_Search').trigger('click');
+            }
+        });
+        // Search for a specific cuisine
+        $('#dl_cuisine').on('change', function () {
+            if (this.value != '') {
+                var selected_option = this.value;
+                var option = $('input[name="sort"]:checked').val();
+                console.log(option);
+                if(option != "" && option != undefined)
+                    location.href = "/Home/Index/" + option + "/" + selected_option;
+                else
+                    location.href = "/Home/Index/0/" + selected_option;
+            }
+        });
+        // Reset URL parameters
+        $('#btn_Reset').on('click', function () {
+            location.href = "/Home/Index";
+        });
+        // If the user has clicked continue, reload the page
+        $('#btn_modal_filter').click(function () {
+            var option_sort = $('input[name="sort"]:checked').val();
+            if (option_sort == "" || typeof option_sort === "undefined") option_sort = 0;
+            var option_cuisine = $('#dl_cuisine2').val();
+            if (option_cuisine == "") option_cuisine = "x";
+            var option_service = $('#dl_service2').val();
+            if (option_service == "") option_service = "x";
+                location.href = "/Home/Index/" + option_sort + "/" + option_cuisine + "/x/" + option_service;
+        });
+        // Keep track of sort filters if user has set them
+        $(document).ready(function () {
+            $('#btn_filter').click(function () {
+                $('#FilterModal').modal('show');
+                if (@ViewBag.Sort == 1) {
+                    $('input:radio[name=sort]')[1].checked = true;
+                } else if (@ViewBag.Sort == 0) {
+                    $('input:radio[name=sort]')[0].checked = true;
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<HCI_Alpha.Models.reviews>
+
+@{
+    var rest = (restaurants)ViewData["RestInfo"];
+    ViewData["Title"] = $"{rest.name} Reviews";
+}
+
+<h1>@ViewData["Title"]</h1>
+@rest.address, @rest.city, @rest.state_code @rest.zip_code
+<br />@rest.telephone
+<br /><a asp-action="Index" class="btn btn-primary">Back to Restaurants</a>
+<a href="#" class="btn btn-secondary">Review Restaurant</a>
+<hr />
+@foreach (var item in Model)
+{
+    <div class="review_post">
+        <input type="hidden" asp-for="@item.restaurant_id" />
+        <input type="hidden" asp-for="@item.id" />
+        @Html.DisplayFor(modelItem => item.customer_name)
+        on @Html.DisplayFor(modelItem => item.review_time_friendly)
+        <span style="float:right;">
+            @switch (item.rating)
+            {
+                case 1:
+                    <img src="~/img/1star.png" width="95" />
+                    break;
+                case 2:
+                    <img src="~/img/2star.png" width="95" />
+                    break;
+                case 3:
+                    <img src="~/img/3star.png" width="95" />
+                    break;
+                case 4:
+                    <img src="~/img/4star.png" width="95" />
+                    break;
+                case 5:
+                    <img src="~/img/5star.png" width="95" />
+                    break;
+            }
+        </span>
+        <br />
+        @Html.DisplayFor(modelItem => item.review_text)
+    </div>
+    <br />
+    <br />
+}
