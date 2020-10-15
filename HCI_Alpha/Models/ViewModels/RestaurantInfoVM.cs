@@ -19,11 +19,11 @@ namespace HCI_Alpha.Models
         public string Rest_CovidPolicy { get; set; }
         public int Rest_PriceRange { get; set; }
         public string Rest_Time { get; set; }
-        public bool Rest_TakeOut { get; set; }
-        public bool Rest_CurbSide { get; set; }
+        public int Rest_TakeOut { get; set; }
+        public int Rest_CurbSide { get; set; }
         public int Rest_Delivery { get; set; }
-        public bool Rest_IndoorSeating { get; set; }
-        public bool Rest_LimitedSeating { get; set; }
+        public int Rest_IndoorSeating { get; set; }
+        public int Rest_LimitedSeating { get; set; }
         public string Rest_Menu { get; set; }
     }
 }
