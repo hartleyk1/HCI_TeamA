@@ -44,53 +44,86 @@
 @foreach (var item in Model)
 {
     <div id="deployRest" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+        <div class="container"  style="width:700px;">
             <a class="navbar-brand" href="@item.Rest_Menu" target="_blank">@item.Rest_Name</a>
-            @item.Rest_CurbSide
-            @item.Rest_TakeOut
-            @item.Rest_IndoorSeating
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#extraInfo_@item.Rest_Id" aria-controls="extraInfo_@item.Rest_Id" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="extraInfo_@item.Rest_Id">
-                <span style="color: #ff2b1c">COVID-19 Policy</span><br />
-                @item.Rest_CovidPolicy
+                <text>
+                    <span style="color:red;">COVID-19 Policy</span>
+                    <ul style="list-style-type:none;">
+                        @if (item.Rest_CurbSide == 1)
+                        {
+                            <li style="color:green;"><img src="~/img/curbside.png" /> Curbside</li>
+                        }
+                        else
+                        {
+                            <li style="color:red;"><img src="~/img/no-curbside.png" />Curbside</li>
+                        }
+                        @if (item.Rest_TakeOut == 1)
+                        {
+                            <li style="color:green;"><img src="~/img/takeout.png" /> Take Out</li>
+                        }
+                        else
+                        {
+                            <li style="color:red;"><img src="~/img/no-takeout.png" /> Take Out</li>
+                        }
+                        @if (item.Rest_IndoorSeating == 1)
+                        {
+                            <li style="color:green;"><img src="~/img/seating.png" /> Indoor Seating</li>
+                        }
+                        else
+                        {
+                            <li style="color:red;"> <img src="~/img/no-seating.png" /> Indoor Seating</li>
+                        }
+                        @if (item.Rest_LimitedSeating == 1)
+                        {
+                            <li style="color:green;"><img src="~/img/limitedseating.png" /> Limited Seating</li>
+                        }
+                        else
+                        {
+                            <li style="color:red;"><img src="~/img/no-limitedseating.png" /> Limited Seating</li>
+                        }
+                    </ul>
+                </text>
                 Location: @item.Rest_Address, @item.Rest_City, @item.Rest_State @item.Rest_ZipCode
                 <br />Hours: @item.Rest_Time
-                <br />Price Range:@if (item.Rest_PriceRange < 15)
+
+                <br />Price Range:
+                @if (item.Rest_PriceRange < 15)
                 {
-                    <b>$</b>
+                    <text> $</text>
                 }
                 else if (item.Rest_PriceRange < 25)
                 {
-                    <b>$$</b>
+                    <text> $$</text>
                 }
                 else if (item.Rest_PriceRange < 50)
                 {
-                    <b>$$$</b>
+                    <text> $$$</text>
                 }
                 else if (item.Rest_PriceRange < 50)
                 {
-                    <b>$$$$</b>
+                    <text> $$$$</text>
                 }
                 else
                 {
-                    <b>$$$$</b>
+                    <text> $$$$$</text>
                 } <br />
                 Telephone: @item.Rest_Phone<br />
                 Delivery:
-                @if (item.Rest_CurbSide == false && item.Rest_IndoorSeating == false && item.Rest_LimitedSeating == false && item.Rest_TakeOut == false)
+                @if (item.Rest_CurbSide == 0 && item.Rest_IndoorSeating == 0 && item.Rest_LimitedSeating == 0 && item.Rest_TakeOut == 0)
                 {
-                    <span>Unvailable</span>
+                    <text>Unvailable</text>
                 }
                 else
                 {
-                    <span>Available</span>
-                }
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More Information</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown07">
-                    <a class="dropdown-item" asp-action="Reviews" asp-route-id="@item.Rest_Id">Reviews</a>
-                </div>
+                    <text>Available</text>
+                }<br />
+                <a class="btn btn-primary"style="float:right;" asp-action="Reviews" asp-route-id="@item.Rest_Id">Reviews</a>
+                
             </div>
         </div>
     </div>

@@ -10,10 +10,10 @@ namespace HCI_Alpha.Models
     {
         public int id { get; set; }
         public int restaurant_id { get; set; }
-        public bool take_out { get; set; }
-        public bool limit_seating { get; set; }
-        public bool indoor_dining { get; set; }
-        public bool curbside { get; set; }
+        public int take_out { get; set; }
+        public int limit_seating { get; set; }
+        public int indoor_dining { get; set; }
+        public int curbside { get; set; }
         public string comments { get; set; }
     }
 }
