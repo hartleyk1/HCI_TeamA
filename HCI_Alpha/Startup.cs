@@ -19,6 +19,7 @@ namespace HCI_Alpha
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -30,7 +31,8 @@ namespace HCI_Alpha
             services.AddDbContext<RestaurantsDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IEstablishments, DbEstablishments>();
-            //services.AddScoped<IBikeRepo, BikeRepo>();
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +53,7 @@ namespace HCI_Alpha
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -58,6 +61,7 @@ namespace HCI_Alpha
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{sort?}/{cuisineType?}/{searchWord?}/{serviceType?}");
+                endpoints.MapRazorPages();
             });
         }
     }
