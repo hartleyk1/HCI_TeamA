@@ -120,6 +120,7 @@ namespace HCI_Alpha.Controllers
                 return View(restList);
         }
 
+
         /// <summary>
         /// Display privacy policies
         /// </summary>
@@ -139,6 +140,8 @@ namespace HCI_Alpha.Controllers
             var reviews = _goEats.ReadAllReviewsByRestaurant(id);
             return View(reviews);
         }
+
+
 
         /// <summary>
         /// Display information about the project
