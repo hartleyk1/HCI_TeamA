@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HCI_Alpha.Data;
 using HCI_Alpha.Services;
 using HCI_Alpha.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +32,13 @@ namespace HCI_Alpha
             services.AddControllersWithViews();
             services.AddDbContext<RestaurantsDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddScoped<IEstablishments, DbEstablishments>();
+           // services.AddScoped<IRestaurantRepository, DbRestaurantRepository>();
+
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<IdentityDbContext>();
 
             services.AddRazorPages();
         }
@@ -61,6 +69,11 @@ namespace HCI_Alpha
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{sort?}/{cuisineType?}/{searchWord?}/{serviceType?}");
+
+                endpoints.MapControllerRoute(
+                    name: "Role",
+                    pattern: "{controller=Role}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
             });
         }

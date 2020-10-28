@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace HCI_Alpha.Services
 {
-    public class RestaurantsDbContext :DbContext
+    public class RestaurantsDbContext : DbContext
     {
         public RestaurantsDbContext(DbContextOptions<RestaurantsDbContext> options) : base(options)
         {
         }
+
         public DbSet<cities> Cities { get; set; }
         public DbSet<covid19> Covid19 { get; set; }
         public DbSet<cuisines> Cuisines { get; set; }
