@@ -34,7 +34,7 @@ namespace HCI_Alpha
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IEstablishments, DbEstablishments>();
-           // services.AddScoped<IRestaurantRepository, DbRestaurantRepository>();
+            services.AddScoped<IRestaurantRepository, DbRestaurantRepository>();
 
             services.AddDefaultIdentity<IdentityUser>()
                     .AddRoles<IdentityRole>()

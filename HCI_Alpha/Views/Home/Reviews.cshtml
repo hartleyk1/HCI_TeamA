@@ -9,7 +9,7 @@
 @rest.address, @rest.city, @rest.state_code @rest.zip_code
 <br />@rest.telephone
 <br /><a asp-action="Index" class="btn btn-primary">Back to Restaurants</a>
-<a href="#" class="btn btn-secondary">Review Restaurant</a>
+<a asp-controller="Restaurant" asp-action="CreateReview" asp-route-restaurantId="@rest.id" class="btn btn-secondary">Review Restaurant</a>
 <hr />
 @foreach (var item in Model)
 {

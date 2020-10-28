@@ -1,0 +1,63 @@
+﻿@model HCI_Alpha.Models.reviews
+
+@{
+    var rest = (restaurants)ViewData["RestInfo"];
+    ViewData["Title"] = $"Review for {rest.name}";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+<center>
+    <small>All fields are required. If you do not provide a name, your name will be set to "Anonymous Reviewer." </small>
+    <form asp-action="CreateReview">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="restaurant_id" value="@rest.id" class="form-control" />
+        <br />
+        Your Name
+        <input type="text" asp-for="customer_name" class="form-control" />
+        <span asp-validation-for="customer_name" class="text-danger"></span>
+        <br />
+        Your Rating<br />
+        <div class="stars">
+                <input class="star star-5" id="star-5" type="radio" name="star" value="5" />
+                <label class="star star-5" for="star-5"></label>
+                <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
+                <label class="star star-4" for="star-4"></label>
+                <input class="star star-3" id="star-3" type="radio" name="star" value="3" />
+                <label class="star star-3" for="star-3"></label>
+                <input class="star star-2" id="star-2" type="radio" name="star" value="2" />
+                <label class="star star-2" for="star-2"></label>
+                <input class="star star-1" id="star-1" type="radio" name="star" value="1" />
+                <label class="star star-1" for="star-1"></label>
+           
+        </div>
+        <input type="hidden" asp-for="rating" class="form-control" />
+        <span asp-validation-for="rating" class="text-danger"></span>
+        <br />
+        Review Headline
+        <input required asp-for="rating_text" class="form-control" />
+        <span asp-validation-for="rating_text" class="text-danger"></span>
+        <br />
+        Review
+        <textarea required asp-for="review_text" class="form-control" placeholder="Leave a review for @rest.name?"></textarea>
+        <span asp-validation-for="review_text" class="text-danger"></span>
+        <br />
+        <input type="submit" value="Submit Review" class="btn btn-primary" />
+    </form>
+
+    <div>
+        <br />
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Back to Restaurants</a>
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="Reviews" asp-route-id="@rest.id">Back to Reviews</a>
+    </div>
+</center>
+@section Scripts {
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        /** code by webdevtrick ( https://webdevtrick.com ) **/
+        $("input[name='star']").change(function () {
+            $('#rating').val($('[name="star"]:checked').val());
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

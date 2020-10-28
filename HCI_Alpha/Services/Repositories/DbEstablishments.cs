@@ -29,6 +29,14 @@ namespace HCI_Alpha.Services.Repositories
         {
             return _db.Cuisines.ToList();
         }
+        public List<cuisines> ReadAllCuisines()
+        {
+            return _db.Cuisines.ToList();
+        }
+        public List<cities> ReadAllCities()
+        {
+            return _db.Cities.ToList();
+        }
 
         public restaurants ReadReastaurantById(int id)
         {

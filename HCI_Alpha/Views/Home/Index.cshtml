@@ -41,92 +41,103 @@
 <br />
 @ViewBag.NoResults
 @ViewBag.Message
+<br />
 @foreach (var item in Model)
 {
-    <div id="deployRest" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container"  style="width:700px;">
-            <a class="navbar-brand" href="@item.Rest_Menu" target="_blank">@item.Rest_Name</a>
+<div id="deployRest_@item.Rest_Id">
+    <div id="deployRestModal_@item.Rest_Id" data="@item.Rest_Id" class="RestTitle">
+        &nbsp;&nbsp;<span style="font-weight:bold;text-shadow:1px 1px 1px slategray;color:black;">
+            @item.Rest_Name
+        </span>
+        <span style="float:right;">
+            @if (item.Rest_CurbSide == 1)
+            {
+                <text><img src="~/img/curbside.png" /></text>
+            }
+            @if (item.Rest_TakeOut == 1)
+            {
+                <text><img src="~/img/takeout.png" /></text>
+            }
+            @if (item.Rest_IndoorSeating == 1)
+            {
+                <text><img src="~/img/seating.png" /></text>
+            }
+            @if (item.Rest_LimitedSeating == 1)
+            {
+                <text><img src="~/img/limitedseating.png" /></text>
+            }
+        </span>
+    </div>
+    <br />
+    <!-- Rest Info Modal -->
+    <div class="modal fade" id="RestInfoModal_@item.Rest_Id">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="color:black;">
+                    <h1>@item.Rest_Name</h1>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="color:black;">
+                    <a class="rest_name btn btn-primary" href="@item.Rest_Menu" target="_blank" style="color:black;">Menu Online</a><br />
+                    <br />
+                    @if (item.Rest_CurbSide == 1)
+                    {
+                        <text><img src="~/img/curbside.png" style="filter:invert(100%);"/></text>
+                    }
+                    @if (item.Rest_TakeOut == 1)
+                    {
+                        <text><img src="~/img/takeout.png" style="filter:invert(100%);"/></text>
+                    }
+                    @if (item.Rest_IndoorSeating == 1)
+                    {
+                        <text><img src="~/img/seating.png" style="filter:invert(100%);"/></text>
+                    }
+                    @if (item.Rest_LimitedSeating == 1)
+                    {
+                        <text><img src="~/img/limitedseating.png" style="filter:invert(100%);"/></text>
+                    }
+                    <br />
+                    <b>Cuisine</b>: @item.Rest_Cuisine<br />
+                    <br /><b>Location</b>: @item.Rest_Address, @item.Rest_City, @item.Rest_State @item.Rest_ZipCode
+                    <br /><b>Hours</b>: @item.Rest_Time
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#extraInfo_@item.Rest_Id" aria-controls="extraInfo_@item.Rest_Id" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="extraInfo_@item.Rest_Id">
-                <text>
-                    <span style="color:red;">COVID-19 Policy</span>
-                    <ul style="list-style-type:none;">
-                        @if (item.Rest_CurbSide == 1)
-                        {
-                            <li style="color:green;"><img src="~/img/curbside.png" /> Curbside</li>
-                        }
-                        else
-                        {
-                            <li style="color:red;"><img src="~/img/no-curbside.png" />Curbside</li>
-                        }
-                        @if (item.Rest_TakeOut == 1)
-                        {
-                            <li style="color:green;"><img src="~/img/takeout.png" /> Take Out</li>
-                        }
-                        else
-                        {
-                            <li style="color:red;"><img src="~/img/no-takeout.png" /> Take Out</li>
-                        }
-                        @if (item.Rest_IndoorSeating == 1)
-                        {
-                            <li style="color:green;"><img src="~/img/seating.png" /> Indoor Seating</li>
-                        }
-                        else
-                        {
-                            <li style="color:red;"> <img src="~/img/no-seating.png" /> Indoor Seating</li>
-                        }
-                        @if (item.Rest_LimitedSeating == 1)
-                        {
-                            <li style="color:green;"><img src="~/img/limitedseating.png" /> Limited Seating</li>
-                        }
-                        else
-                        {
-                            <li style="color:red;"><img src="~/img/no-limitedseating.png" /> Limited Seating</li>
-                        }
-                    </ul>
-                </text>
-                Location: @item.Rest_Address, @item.Rest_City, @item.Rest_State @item.Rest_ZipCode
-                <br />Hours: @item.Rest_Time
-
-                <br />Price Range:
-                @if (item.Rest_PriceRange < 15)
-                {
-                    <text> $</text>
-                }
-                else if (item.Rest_PriceRange < 25)
-                {
-                    <text> $$</text>
-                }
-                else if (item.Rest_PriceRange < 50)
-                {
-                    <text> $$$</text>
-                }
-                else if (item.Rest_PriceRange < 50)
-                {
-                    <text> $$$$</text>
-                }
-                else
-                {
-                    <text> $$$$$</text>
-                } <br />
-                Telephone: @item.Rest_Phone<br />
-                Delivery:
-                @if (item.Rest_CurbSide == 0 && item.Rest_IndoorSeating == 0 && item.Rest_LimitedSeating == 0 && item.Rest_TakeOut == 0)
-                {
-                    <text>Unvailable</text>
-                }
-                else
-                {
-                    <text>Available</text>
-                }<br />
-                <a class="btn btn-primary"style="float:right;" asp-action="Reviews" asp-route-id="@item.Rest_Id">Reviews</a>
-                
+                    <br /><b>Price Range</b>:
+                    @if (item.Rest_PriceRange < 15)
+                    {
+                        <text> $</text>
+                    }
+                    else if (item.Rest_PriceRange < 25)
+                    {
+                        <text> $$</text>
+                    }
+                    else if (item.Rest_PriceRange < 35)
+                    {
+                        <text> $$$</text>
+                    }
+                    else if (item.Rest_PriceRange < 40)
+                    {
+                        <text> $$$$</text>
+                    }
+                    else
+                    {
+                        <text> $$$$$</text>
+                    } <br />
+                      <b>Telephone</b>: @item.Rest_Phone<br />
+                                                        <b>Delivery</b>:
+                    @if (item.Rest_CurbSide == 0 && item.Rest_IndoorSeating == 0 && item.Rest_LimitedSeating == 0 && item.Rest_TakeOut == 0)
+                    {
+                        <text>Unvailable</text>
+                    }
+                    else
+                    {
+                        <text>Available</text>
+                    }<br />
+                    <a class="btn btn-primary" style="float:right;" asp-action="Reviews" asp-route-id="@item.Rest_Id">Reviews</a>
+                </div>
             </div>
         </div>
     </div>
+</div>
     <!-- Filter/Search Modal -->
     <div class="modal fade" id="FilterModal">
         <div class="modal-dialog">
@@ -135,9 +146,9 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body" style="color:black;">
-                    <b>Sort Restaurants by</b><br />
+                    <b>Sort Restaurants by Name</b><br />
                     <input type="radio" id="rd_desc" name="sort" value="0" group />
-                    <label for="rd_desc">Descinding</label>
+                    <label for="rd_desc">Descending</label>
                     <br />
                     <input type="radio" id="rd_asc" name="sort" value="1" />
                     <label for="rd_asc">Ascending</label>
@@ -166,6 +177,13 @@
 }
 @section scripts {
     <script>
+        $("[id^='restInfo_']").click(function () {
+            $('#RestInfoModal_' + $(this).attr('data')).modal('show');
+        });
+        $("[id ^='deployRestModal_']").click(function () {
+
+            $('#RestInfoModal_' + $(this).attr('data')).modal('show');
+        });
         // Search for anything that pertains to a restaurant name
         $('#btn_Search').on('click', function () {
             var search = $('#liveSearch').val();

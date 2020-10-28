@@ -1,0 +1,241 @@
+﻿@model HCI_Alpha.Models.restaurants
+
+@{
+    ViewData["Title"] = "Create a Restaurant";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<form asp-action="CreateRestaurant">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="id" class="form-control" />
+    <div class="form-group">
+        <label asp-for="name" class="control-label"></label>
+        <input required asp-for="name" class="form-control" />
+        <span asp-validation-for="name" class="text-danger"></span>
+    </div>
+    <hr />
+    <b>Address</b><br />
+    <div class="form-group">
+        <label asp-for="address" class="control-label"></label>
+        <input required asp-for="address" class="form-control" />
+        <span asp-validation-for="address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="city" class="control-label"></label>
+        <select id="ddl_city"
+                class="form-control"
+                asp-items="@(new SelectList(@ViewBag.ListOfCities, "id", "city_name"))">
+        </select>
+        <input required type="hidden" asp-for="city" class="form-control" />
+        <input type="hidden" asp-for="city_id" class="form_control" />
+        <input type="hidden" asp-for="locality_verbose" class="form-control" />
+        <span asp-validation-for="city_id" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="state_code" class="control-label"></label>
+        <input required readonly asp-for="state_code" class="form-control" />
+        <span asp-validation-for="state_code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="zip_code" class="control-label"></label>
+        <input required asp-for="zip_code" class="form-control" />
+        <span asp-validation-for="zip_code" class="text-danger"></span>
+    </div>
+    <hr />
+    <b>Food Details</b><br />
+    <div class="form-group">
+        <label asp-for="cuisines" class="control-label"></label>
+        <select id="ddl_cuisines"
+                class="form-control"
+                multiple
+                asp-items="@(new SelectList(@ViewBag.ListOfCuisines, "id", "cuisine_name"))">
+        </select>
+        <input required type="hidden" asp-for="cuisine_id" class="form-control" />
+        <input type="hidden" asp-for="cuisines" class="form-control" />
+        <span asp-validation-for="cuisines" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="establishment" class="control-label"></label>
+        <select asp-for="establishment" class="form-control">
+            <option value="0" selected>-- Select --</option>
+            <option value="Casual Dining">Casual Dining</option>
+            <option value="Take Out">Take Out</option>
+        </select>
+        <span asp-validation-for="establishment" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="has_delivery" class="control-label"></label>
+        <select asp-for="has_delivery" class="form-control">
+            <option value="0" selected>-- Select --</option>
+            <option value="-1">No</option>
+            <option value="1">Yes</option>
+        </select>
+        <span asp-validation-for="has_delivery" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="has_takeaway" class="control-label"></label>
+        <select asp-for="has_takeaway" class="form-control">
+            <option value="0" selected>-- Select --</option>
+            <option value="-1">No</option>
+            <option value="1">Yes</option>
+        </select>
+        <span asp-validation-for="has_takeaway" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="price_range" class="control-label"></label><br />
+        <small>1-60 Range, cost per patron.</small><br />
+        <input required asp-for="price_range" max="60" min="1" class="form-control" />
+        Price Range Visual: <label type="text" id="price_rangeDisplay"></label>
+        <span asp-validation-for="price_range" class="text-danger"></span>
+    </div>
+    <hr />
+    <b>More Business Details</b><br />
+    <div class="form-group">
+        <label asp-for="telephone" class="control-label"></label>
+        <input required asp-for="telephone" class="form-control" />
+        <span asp-validation-for="telephone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="timings" class="control-label"></label><br />
+        <small>A day without any specified time is automatically
+        set to <i>closed</i>. Weekly operations will automatically set the days on Daily Operations; however, daily hours can be changed.</small>
+        <br />
+        <i>Weekly Operations</i>:<br />
+        Weekdays(M-F): <br /><input type="time" data="Mon-Fri" id="week_From" /> <input type="time" data="Mon-Fri" id="week_To" /><br />
+        Weekends(S-S): <br /><input type="time" data="Sun-Sat" id="weekend_From" /> <input type="time" data="Sun-Sat" id="weekend_To" /><br /><br />
+        <i>Daily Operations</i>:<br />
+        Sunday: <br /><input type="time" data="Sun" id="S_From_End" /> <input type="time" data="Sun" id="S_To_End" /><br />
+        Monday: <br /><input type="time" data="Mon" id="M_From_Daily" /> <input type="time" data="Mon" id="M_To_Daily" /><br />
+        Tuesday: <br /><input type="time" data="Tues" id="T_From_Daily" /> <input type="time" data="Tues" id="T_To_Daily" /><br />
+        Wednesday: <br /><input type="time" data="Wed" id="W_From_Daily" /> <input type="time" data="Wed" id="W_To_Daily" /><br />
+        Thursday: <br /><input type="time" data="Thurs" id="R_From_Daily" /> <input type="time" data="Thurs" id="R_To_Daily" /><br />
+        Friday: <br /><input type="time" data="Fri" id="F_From_Daily" /> <input type="time" data="Fri" id="F_To_Daily" /><br />
+        Saturday: <br /><input type="time" data="Sat" id="A_From_End" /> <input type="time" data="Sat" id="A_To_End" /><br />
+        <input required asp-for="timings" class="form-control" />
+        <span asp-validation-for="timings" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="menu_url" class="control-label"></label>
+        <input asp-for="menu_url" class="form-control" />
+        <span asp-validation-for="menu_url" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="url" class="control-label"></label>
+        <input asp-for="url" class="form-control" />
+        <span asp-validation-for="url" class="text-danger"></span>
+    </div>
+    <input type="hidden" value="$" asp-for="currency" class="form-control" />
+    <input type="hidden" asp-for="locality" class="form-control" />
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Back to Restaurants</a>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
+    <script>
+        var hop = "";
+        $("#week_From").change(function () {
+            $("[id$='From_Daily']").val($("#week_From").val());
+        });
+        $("#week_To").change(function () {
+            $("[id$='To_Daily']").val($("#week_To").val());
+            hop += "(" + $(this).attr('data') + " " +$("#week_From").val() + "-" + $("#week_To").val() + ") ";
+            $("#timings").val(hop);
+        });
+        $("#weekend_From").change(function () {
+            $("[id$='From_End']").val($("#weekend_From").val());
+        });
+        $("#weekend_To").change(function () {
+            $("[id$='To_End']").val($("#weekend_To").val());
+            hop += "(" + $(this).attr('data') + " " +$("#weekend_From").val() + "-" + $("#weekend_To").val() + ") ";
+            $("#timings").val(hop);
+        });
+        $("[id^='S_']").change(function () {
+            hop += $(this).attr('data') + " " +$("#S_From_End").val() + "-" + $("#S_To_End").val();
+            $("#timings").val(hop);
+        });
+        $("[id^='M_']").change(function () {
+            hop += $(this).attr('data') + " " +$("#M_From_Daily").val() + "-" + $("#M_To_Daily").val();
+            $("#timings").val(hop);
+        });
+        $("[id^='T_']").change(function () {
+            hop += $(this).attr('data') + " " +$("#T_From_Daily").val() + "-" + $("#T_To_Daily").val();
+            $("#timings").val(hop);
+        });
+        $("[id^='W_']").change(function () {
+            hop += $(this).attr('data') + " " +$("#W_From_Daily").val() + "-" + $("#W_To_Daily").val();
+            $("#timings").val(hop);
+        });
+        $("[id^='R_']").change(function () {
+            hop += $(this).attr('data') + " " +$("#R_From_Daily").val() + "-" + $("#R_To_Daily").val();
+            $("#timings").val(hop);
+        });
+        $("[id^='F_']").change(function () {
+            hop += $(this).attr('data') + " " +$("#F_From_Daily").val() + "-" + $("#F_To_Daily").val();
+            $("#timings").val(hop);
+        });
+        $("[id^='A_']").change(function () {
+            hop += $(this).attr('data') + " " +$("#A_From_End").val() + "-" + $("#A_To_End").val();
+            $("#timings").val(hop);
+        });
+        $(window).load(function () {
+            var phones = [{ "mask": "(###) ###-####" }];
+            $('#telephone').inputmask({
+                mask: phones,
+                greedy: false,
+                definitions: { '#': { validator: "[0-9]", cardinality: 1 } }
+            });
+        });
+        $("#price_range").change(function () {
+            if ($("#price_range").val() < 15) {
+                $("#price_rangeDisplay").text("$");
+            } else if ($("#price_range").val() < 25) {
+                $("#price_rangeDisplay").text("$$");
+            } else if ($("#price_range").val() < 30) {
+                $("#price_rangeDisplay").text("$$$");
+            } else if ($("#price_range").val() < 40) {
+                $("#price_rangeDisplay").text("$$$$");
+            } else {
+                $("#price_rangeDisplay").text("$$$$$");
+            }
+        });
+        $("#ddl_city").change(function () {
+            $("#city").val($("#ddl_city :selected").text());
+            $("#city_id").val($("#ddl_city :selected").val());
+            switch ($("#city_id").val()) {
+                case "901":
+                    $("#state_code").val("NC");
+                    $("#locality_verbose").val("Asheville, NC");
+                    break;
+                case "1135":
+                    $("#state_code").val("TN");
+                    $("#locality_verbose").val("Johnson City, TN");
+                    break;
+                case "1153":
+                    $("#state_code").val("TN");
+                    $("#locality_verbose").val("Knoxville, TN");
+                    break;
+                case "9780":
+                    $("#state_code").val("VA");
+                    $("#locality_verbose").val("Bristol, VA");
+                    break;
+            }
+        });
+        $("#ddl_cuisines").change(function () {
+            var str = "";
+            $("#cuisines").val("");
+            $("#cuisine_id").val("");
+            $("#cuisines").val($("#ddl_cuisines option:selected").text());
+            $("#cuisine_id").val($("#ddl_cuisines option:selected").val());
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

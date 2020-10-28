@@ -27,6 +27,13 @@ namespace HCI_Alpha.Services.Repositories
             return restaurant;
         }
 
+        public reviews CreateReview(reviews review)
+        {
+            _db.Reviews.Add(review);
+            _db.SaveChanges();
+            return review;
+        }
+
         public void Update(int id, restaurants restaurant)
         {
             restaurants restaurantToUpdate = Read(id);

@@ -10,6 +10,8 @@ namespace HCI_Alpha.Services.Repositories
     {
         ICollection<restaurants> ReadAll();
         ICollection<cuisines> ReadAllTypes();
+        List<cuisines> ReadAllCuisines();
+        List<cities> ReadAllCities();
         ICollection<reviews> ReadAllReviewsByRestaurant(int id);
         restaurants ReadReastaurantById(int id);
     }

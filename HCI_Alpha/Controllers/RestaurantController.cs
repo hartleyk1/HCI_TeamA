@@ -5,34 +5,76 @@ using System.Threading.Tasks;
 using HCI_Alpha.Models;
 using HCI_Alpha.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace HCI_Alpha.Controllers
 {
     public class RestaurantController : Controller
     {
-        private IRestaurantRepository _restaurantRepo;
+        private readonly IRestaurantRepository _restaurantRepo;
+        private readonly IEstablishments _establishmentRepo;
 
-        public RestaurantController(IRestaurantRepository restaurantRepo)
+        public RestaurantController(IRestaurantRepository restaurantRepo, IEstablishments establishmentRepo)
         {
             _restaurantRepo = restaurantRepo;
+            _establishmentRepo = establishmentRepo;
         }
 
         public IActionResult CreateRestaurant()
         {
+            List<cities> cityList = new List<cities>();
+            List<cuisines> cuisineList = new List<cuisines>();
+            cityList = _establishmentRepo.ReadAllCities();
+            cuisineList = _establishmentRepo.ReadAllCuisines();
+            cityList.Insert(0, new cities { id = 0, city_name = "-- Select City --"});
+            ViewBag.ListOfCities = cityList;
+            ViewBag.ListOfCuisines = cuisineList;
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreateRestaurant(restaurants resturant)
+        public IActionResult CreateRestaurant(restaurants restaurant)
         {
-            if (ModelState.IsValid)
+            if (restaurant.has_delivery != 0 && restaurant.has_delivery != 0 && restaurant.establishment != "0")
             {
-                _restaurantRepo.Create(resturant);
+                _restaurantRepo.Create(restaurant);
 
-                return RedirectToAction("Index");
-
+                return RedirectToAction("Index", "Home");
             }
-            return View(resturant);
+            return View(restaurant);
+        }
+
+        public IActionResult CreateReview(int restaurantId)
+        {
+            var restaurant = _restaurantRepo.Read(restaurantId);
+            ViewData["RestInfo"] = restaurant;
+            reviews review = new reviews()
+            {
+                restaurant_id = restaurantId
+            };
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateReview(reviews review)
+        {
+            if (ModelState.IsValid && !string.IsNullOrEmpty(review.rating_text) && (!string.IsNullOrEmpty(review.rating.ToString()) || review.rating > 0))
+            {
+                review.review_time_friendly = DateTime.Now.ToString("MMM dd, yyyy");
+                if (string.IsNullOrEmpty(review.customer_name))
+                {
+                    review.customer_name = "Anonymous Reviewer";
+                }
+                _restaurantRepo.CreateReview(review);
+                return RedirectToAction("Reviews", "Home", new { id = review.restaurant_id });
+            } else
+            {
+                ModelState.AddModelError(string.Empty, "Your Review is missing the required fields. Please try again and ensure that all fields are filled out correctly.");
+            }
+            var restaurant = _restaurantRepo.Read(review.restaurant_id);
+            ViewData["RestInfo"] = restaurant;
+            return View(review);
         }
     }
 }
