@@ -1,0 +1,152 @@
+﻿@model HCI_Alpha.Models.restaurants
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>restaurants</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.city_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.city_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.cuisine_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.cuisine_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.cuisines)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.cuisines)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.currency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.establishment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.establishment)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.has_delivery)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.has_delivery)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.has_takeaway)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.has_takeaway)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.address)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.city)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.city)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.state_code)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.state_code)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.locality)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.locality)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.locality_verbose)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.locality_verbose)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.zip_code)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.zip_code)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.menu_url)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.menu_url)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.telephone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.telephone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price_range)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price_range)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.timings)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.timings)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.url)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.url)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.aggregate_rating)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.aggregate_rating)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.rating_text)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.rating_text)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteRest" asp-route-id="@Model.id">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-controller="Home">Back to List</a>
+    </form>
+</div>

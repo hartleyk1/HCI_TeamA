@@ -12,6 +12,7 @@ namespace HCI_Alpha.Services.Repositories
         restaurants Create(restaurants restaurant);
         reviews CreateReview(reviews review);
         void Update(int id, restaurants restaurant);
+        void Update(restaurants restaurant);
         void Delete(int id);
 
     }

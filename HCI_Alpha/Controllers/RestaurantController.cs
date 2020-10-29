@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HCI_Alpha.Models;
 using HCI_Alpha.Services.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
@@ -19,6 +20,60 @@ namespace HCI_Alpha.Controllers
         {
             _restaurantRepo = restaurantRepo;
             _establishmentRepo = establishmentRepo;
+        }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult Edit(int id)
+        {
+            var getRest = _restaurantRepo.Read(id);
+
+            if(getRest != null)
+            {
+                return View(getRest);
+            }
+
+            return RedirectToAction("Index", "Home" );
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult Edit(restaurants rest)
+        {
+            var check = _restaurantRepo.Read(rest.id);
+
+            if(check != null)
+            {
+                _restaurantRepo.Update(rest);
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult Delete(int id)
+        {
+            var check = _restaurantRepo.Read(id);
+
+            if(check != null)
+            {
+                return View(check);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult DeleteRest(int id)
+        {
+            var getRest = _restaurantRepo.Read(id);
+
+            if(getRest != null)
+            {
+                _restaurantRepo.Delete(id);
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+
         }
 
         public IActionResult CreateRestaurant()
