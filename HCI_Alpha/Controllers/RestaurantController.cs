@@ -22,7 +22,7 @@ namespace HCI_Alpha.Controllers
             _establishmentRepo = establishmentRepo;
         }
 
-        [Authorize(Roles = "admin")]
+   
         public IActionResult Edit(int id)
         {
             var getRest = _restaurantRepo.Read(id);
@@ -36,7 +36,7 @@ namespace HCI_Alpha.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+       
         public IActionResult Edit(restaurants rest)
         {
             var check = _restaurantRepo.Read(rest.id);
@@ -49,7 +49,7 @@ namespace HCI_Alpha.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var check = _restaurantRepo.Read(id);
@@ -62,7 +62,7 @@ namespace HCI_Alpha.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteRest(int id)
         {
             var getRest = _restaurantRepo.Read(id);

@@ -10,25 +10,25 @@ namespace HCI_Alpha
     {
         public static void Seed(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            if(roleManager.FindByNameAsync("admin").Result == null)
+            if(roleManager.FindByNameAsync("Admin").Result == null)
             {
                 IdentityRole role = new IdentityRole
                 {
-                    Name = "admin"
+                    Name = "Admin"
                 };
 
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
             }
 
-            if (userManager.FindByEmailAsync("trimmj@etsu.edu").Result == null)
+            if (userManager.FindByEmailAsync("admin@etsu.edu").Result == null)
             {
                 IdentityUser user = new IdentityUser
                 {
-                    UserName = "trimmj@etsu.edu",
-                    Email = "trimmj@etsu.edu"
+                    UserName = "admin@etsu.edu",
+                    Email = "admin@etsu.edu"
                 };
-                IdentityResult result = userManager.CreateAsync(user, "FuckOff123!").Result;
+                IdentityResult result = userManager.CreateAsync(user, "Passw0rd!").Result;
 
                 if (result.Succeeded)
                 {
