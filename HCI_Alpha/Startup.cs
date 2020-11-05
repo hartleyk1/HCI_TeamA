@@ -78,6 +78,10 @@ namespace HCI_Alpha
                     name: "Role",
                     pattern: "{controller=Role}/{action=Index}/{id?}");
 
+                endpoints.MapControllerRoute(
+                    name: "Restaurant",
+                    pattern: "{controller=Restaurant}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
             });
         }
